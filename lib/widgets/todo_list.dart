@@ -12,78 +12,42 @@ class _TodoListState extends State<TodoList> {
   // Firebase instance.
   var db = FirebaseFirestore.instance;
 
-  final Stream<QuerySnapshot> _taskStream =
-      FirebaseFirestore.instance.collection('tasks').snapshots();
-
-  // Inicializa state.
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  // Add new task to tasks collection.
-  void addTask() {
-    // New task.
-    final task = <String, dynamic>{
-      "title": "Laravel",
-      "description": "Learn Repository Pattern in Laravel.",
-      "tag": "work",
-    };
-
-    // Persist to collection in database.
-    db
-        .collection("tasks")
-        .add(task)
-        .then((DocumentReference doc) => print('Stored. Task id: ${doc.id}'));
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        color: Colors.deepPurple,
-        child: IconTheme(
-          data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                tooltip: 'Open navigation menu',
-                icon: const Icon(Icons.menu),
-                onPressed: () {},
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: addTask,
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: StreamBuilder<QuerySnapshot>(
-        stream: _taskStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text('Error!');
-          }
-          if (!snapshot.hasData) {
-            return const Text('Empty!');
-          }
-          return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              final data = document.data()! as Map<String, dynamic>;
+    return StreamBuilder<QuerySnapshot>(
+      // Snapshot contém todos os documentos da coleção tasks do firestore.
+      stream: db.collection('tasks').snapshots(),
+      builder: (context, snapshot) {
+        // Erro na requisição.
+        if (snapshot.hasError) {
+          return const Text('Error!');
+        }
+        // Snapshot vazio.
+        if (!snapshot.hasData) {
+          return const Text('Empty!');
+        }
+        return ListView(
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            // Transforma snapshot dos documentos em um map (array com keys e values).
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
 
-              return ListTile(
-                leading:
-                    Icon((data['tag'] == 'work') ? Icons.work : Icons.backpack),
+            // Faz 1 card para cada item do map data.
+            return Card(
+              color: const Color.fromARGB(255, 243, 243, 243),
+              margin: const EdgeInsets.all(5),
+              child: ListTile(
+                leading: Icon(
+                  (data['tag'] == 'work') ? Icons.work : Icons.backpack,
+                  size: 30,
+                ),
                 title: Text(data['title']),
                 subtitle: Text(data['description']),
-              );
-            }).toList(),
-          );
-        },
-      ),
+              ),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }
