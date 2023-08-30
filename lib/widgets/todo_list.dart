@@ -18,7 +18,7 @@ class _TodoListState extends State<TodoList> {
       // Snapshot contém todos os documentos da coleção tasks do firestore.
       stream: db.collection('tasks').snapshots(),
       builder: (context, snapshot) {
-        // Erro na requisição.
+        // Erro na snapshot.
         if (snapshot.hasError) {
           return const Text('Error!');
         }
@@ -34,8 +34,8 @@ class _TodoListState extends State<TodoList> {
 
             // Faz 1 card para cada item do map data.
             return Card(
-              color: const Color.fromARGB(255, 243, 243, 243),
-              margin: const EdgeInsets.all(5),
+              color: const Color.fromARGB(255, 252, 252, 252),
+              margin: const EdgeInsets.all(10),
               child: ListTile(
                 leading: Icon(
                   (data['tag'] == 'work') ? Icons.work : Icons.backpack,
