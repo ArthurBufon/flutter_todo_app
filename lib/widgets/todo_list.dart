@@ -19,9 +19,17 @@ class _TodoListState extends State<TodoList> {
   // Exclui item da lista.
   void _deleteTaskItem(String taskId) {
     db.collection("tasks").doc(taskId).delete().then(
-      (doc) => print("Document deleted"),
-      onError: (e) => print("Error updating document $e"),
-    );
+          (doc) => // Toast success
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Color.fromARGB(255, 101, 225, 105),
+            content: Text("Task deleted successfully!"),
+          )),
+          onError: (e) =>
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Color.fromARGB(255, 241, 117, 117),
+            content: Text("Error deleting task"),
+          )),
+        );
   }
 
   @override
@@ -64,7 +72,7 @@ class _TodoListState extends State<TodoList> {
                     decoration: const BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Color.fromARGB(255, 82, 82, 82),
+                          color: Color.fromARGB(255, 102, 102, 102),
                           blurRadius: 15.0,
                         ),
                       ],

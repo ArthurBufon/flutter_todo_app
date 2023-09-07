@@ -43,8 +43,12 @@ class _NewTaskState extends State<NewTask> {
     };
 
     // Sends to firestore.
-    db.collection('tasks').add(task).then((DocumentReference doc) => print('Task successfully added. Id = ${doc.id}'));
-  
+    db.collection('tasks').add(task).then((DocumentReference doc) =>
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Color.fromARGB(255, 101, 225, 105),
+          content: Text('Task successfully added!'),
+        )));
+
     // Redirects back to home page.
     Navigator.pop(context);
   }

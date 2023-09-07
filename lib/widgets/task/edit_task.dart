@@ -59,13 +59,19 @@ class _EditTaskState extends State<EditTask> {
 
   // Adds new task to database.
   void _updateTask({required taskId, required taskData}) {
-
     // Task Reference to document.
     final taskRef = db.collection('tasks').doc(taskId);
 
     taskRef.update(taskData).then(
-        (value) => print("DocumentSnapshot successfully updated!"),
-        onError: (e) => print("Error updating document $e"));
+        (value) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Color.fromARGB(255, 101, 225, 105),
+              content: Text("Task updated successfully!"),
+            )),
+        onError: (e) =>
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Color.fromARGB(255, 241, 117, 117),
+              content: Text("Error in updating data!"),
+            )));
 
     // // Redirects back to home page.
     Navigator.pop(context);

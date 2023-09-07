@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/widgets/task/new_task.dart';
 import 'package:flutter_todo_app/widgets/todo_list.dart';
