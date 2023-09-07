@@ -83,7 +83,7 @@ class _EditTaskState extends State<EditTask> {
       backgroundColor: const Color.fromARGB(255, 252, 232, 255),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
-        color: const Color.fromARGB(255, 102, 73, 154),
+        color: const Color.fromARGB(255, 174, 148, 222),
         child: IconTheme(
           data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
           child: Row(
@@ -126,12 +126,16 @@ class _EditTaskState extends State<EditTask> {
                     TextFormField(
                       controller: taskTitleController,
                       decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 253, 241, 255),
                         border: OutlineInputBorder(),
                         labelText: 'Task',
                       ),
                       // Validation.
                       validator: (value) {
-                        if (value == null || value.isEmpty || value.length <= 1) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length <= 1) {
                           return 'Please enter some text';
                         }
                         return null;
@@ -142,12 +146,16 @@ class _EditTaskState extends State<EditTask> {
                     TextFormField(
                       controller: taskDescController,
                       decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 253, 241, 255),
                         border: OutlineInputBorder(),
                         labelText: 'Description',
                       ),
                       // Validation.
                       validator: (value) {
-                        if (value == null || value.isEmpty || value.length <= 1) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length <= 1) {
                           return 'Please enter some text';
                         }
                         return null;
@@ -174,7 +182,9 @@ class _EditTaskState extends State<EditTask> {
                         );
                       }).toList(),
                     ),
+
                     const SizedBox(height: 40),
+
                     // Submit button.
                     SizedBox(
                       height: 50,
@@ -193,7 +203,7 @@ class _EditTaskState extends State<EditTask> {
                             final taskName = taskTitleController.text;
                             final taskDesc = taskDescController.text;
                             final taskTag = _selectedTag.toString();
-      
+
                             // Generates json for task.
                             final taskData = <String, dynamic>{
                               "title": taskName,
@@ -203,17 +213,21 @@ class _EditTaskState extends State<EditTask> {
                             _updateTask(taskId: taskId, taskData: taskData);
                           }
                         },
-                        // Submit Form.
                         style: ButtonStyle(
-                          shape: MaterialStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
                             ),
-                          ),
-                        ),
+                            backgroundColor: const MaterialStatePropertyAll(
+                              Color.fromARGB(255, 174, 148, 222),
+                            )),
                         child: const Text(
-                          'Submit',
-                          style: TextStyle(fontSize: 17),
+                          'Save',
+                          style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),

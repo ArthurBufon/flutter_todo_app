@@ -102,6 +102,8 @@ class _NewTaskState extends State<NewTask> {
                     TextFormField(
                       controller: taskNameController,
                       decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 253, 241, 255),
                         border: OutlineInputBorder(),
                         labelText: 'Task',
                       ),
@@ -118,6 +120,8 @@ class _NewTaskState extends State<NewTask> {
                     TextFormField(
                       controller: taskDescController,
                       decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 253, 241, 255),
                         border: OutlineInputBorder(),
                         labelText: 'Description',
                       ),
@@ -166,17 +170,21 @@ class _NewTaskState extends State<NewTask> {
                                 taskTag: taskTag);
                           }
                         },
-                        // Submit Form.
                         style: ButtonStyle(
-                          shape: MaterialStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
                             ),
-                          ),
-                        ),
+                            backgroundColor: const MaterialStatePropertyAll(
+                              Color.fromARGB(255, 174, 148, 222),
+                            )),
                         child: const Text(
-                          'Submit',
-                          style: TextStyle(fontSize: 17),
+                          'Save',
+                          style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),

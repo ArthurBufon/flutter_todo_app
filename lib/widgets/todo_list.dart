@@ -34,94 +34,125 @@ class _TodoListState extends State<TodoList> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      // Snapshot contém todos os documentos da coleção tasks do firestore.
-      stream: db.collection('tasks').snapshots(),
-      builder: (context, snapshot) {
-        // Erro na snapshot.
-        if (snapshot.hasError) {
-          return const Text('Error!');
-        }
-        // Snapshot vazio.
-        if (!snapshot.hasData) {
-          return const Center(child: Text('Empty!'));
-        }
-        return ListView(
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            // Transforma snapshot dos documentos em um map (array com keys e values).
-            Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
-            // Faz 1 card para cada item do map data.
-            return Column(
-              children: [
-                Slidable(
-                  // The end action pane is the one at the right or the bottom side.
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (context) => _deleteTaskItem(document.id),
-                        backgroundColor: const Color.fromARGB(255, 234, 71, 62),
-                        foregroundColor: Colors.white,
-                        icon: Icons.delete_forever,
-                        label: 'Delete',
-                      ),
-                    ],
-                  ),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 155, 155, 155),
-                          blurRadius: 25.0,
-                        ),
-                      ],
-                    ),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          color: Color.fromARGB(255, 242, 208, 255),
-                        ),
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                      child: ListTile(
-                        leading: Icon(
-                          (data['tag'] == 'work') ? Icons.work : Icons.backpack,
-                          size: 35,
-                        ),
-                        title: Text(
-                          data['title'],
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        subtitle: Text(
-                          data['description'],
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        // Navigate to edit task screen.
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  EditTask(taskId: document.id, taskData: data),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+    return Column(
+      children: [
+        // Name of the screen
+        Flexible(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text(
+                'My Tasks',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 176, 96, 190),
                 ),
-                const SizedBox(height: 10),
-              ],
-            );
-          }).toList(),
-        );
-      },
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        // List of Tasks.
+        Flexible(
+          child: StreamBuilder<QuerySnapshot>(
+            // Snapshot contém todos os documentos da coleção tasks do firestore.
+            stream: db.collection('tasks').snapshots(),
+            builder: (context, snapshot) {
+              // Erro na snapshot.
+              if (snapshot.hasError) {
+                return const Text('Error!');
+              }
+              // Snapshot vazio.
+              if (!snapshot.hasData) {
+                return const Center(child: Text('Empty!'));
+              }
+              return ListView(
+                children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                  // Transforma snapshot dos documentos em um map (array com keys e values).
+                  Map<String, dynamic> data =
+                      document.data() as Map<String, dynamic>;
+
+                  // Faz 1 card para cada item do map data.
+                  return Column(
+                    children: [
+                      Slidable(
+                        // The end action pane is the one at the right or the bottom side.
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) =>
+                                  _deleteTaskItem(document.id),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 234, 71, 62),
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete_forever,
+                              label: 'Delete',
+                            ),
+                          ],
+                        ),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 197, 197, 197),
+                                blurRadius: 25.0,
+                              ),
+                            ],
+                          ),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                color: Color.fromARGB(255, 242, 208, 255),
+                              ),
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                            child: ListTile(
+                              leading: Icon(
+                                (data['tag'] == 'work')
+                                    ? Icons.work
+                                    : Icons.backpack,
+                                size: 35,
+                              ),
+                              title: Text(
+                                data['title'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              subtitle: Text(
+                                data['description'],
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              // Navigate to edit task screen.
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditTask(
+                                        taskId: document.id, taskData: data),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  );
+                }).toList(),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
