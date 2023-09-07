@@ -16,13 +16,16 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: const Color.fromARGB(255, 252, 232, 255),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
-        color: const Color.fromARGB(255, 102, 73, 154),
+        color: const Color.fromARGB(255, 174, 148, 222),
         child: IconTheme(
           data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-          child: Container(height: 50,),
+          child: Container(
+            height: 50,
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromARGB(255, 142, 112, 197),
         // Display NewTask view.
         onPressed: () {
           Navigator.push(
@@ -35,7 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: const TodoList(),
+      body: const SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: TodoList(),
+        ),
+      ),
     );
   }
 }

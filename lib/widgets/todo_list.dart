@@ -72,8 +72,8 @@ class _TodoListState extends State<TodoList> {
                     decoration: const BoxDecoration(
                       boxShadow: [
                         BoxShadow(
-                          color: Color.fromARGB(255, 102, 102, 102),
-                          blurRadius: 15.0,
+                          color: Color.fromARGB(255, 155, 155, 155),
+                          blurRadius: 25.0,
                         ),
                       ],
                     ),
@@ -116,6 +116,7 @@ class _TodoListState extends State<TodoList> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
               ],
             );
           }).toList(),
