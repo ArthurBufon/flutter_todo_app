@@ -26,7 +26,7 @@ class _TodoListState extends State<TodoList> {
           )),
           onError: (e) =>
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Color.fromARGB(255, 241, 117, 117),
+            backgroundColor: Color.fromARGB(255, 241, 117, 117),
             content: Text("Error deleting task"),
           )),
         );
@@ -78,6 +78,12 @@ class _TodoListState extends State<TodoList> {
                       ],
                     ),
                     child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                          color: Color.fromARGB(255, 242, 208, 255),
+                        ),
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
                       child: ListTile(
                         leading: Icon(
                           (data['tag'] == 'work') ? Icons.work : Icons.backpack,
