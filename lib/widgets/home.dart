@@ -19,15 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
         color: Colors.deepPurple,
         child: IconTheme(
           data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                tooltip: 'Open navigation menu',
-                icon: const Icon(Icons.menu),
-                onPressed: () {},
-              ),
-            ],
-          ),
+          child: Container(height: 50,),
         ),
       ),
       floatingActionButton: FloatingActionButton(

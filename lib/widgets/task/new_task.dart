@@ -150,12 +150,6 @@ class _NewTaskState extends State<NewTask> {
                       onPressed: () {
                         // Validates form.
                         if (_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            // Shows snackbar.
-                            const SnackBar(
-                              content: Text('Processing data...'),
-                            ),
-                          );
                           // Sends data to store on db.
                           final taskName = taskNameController.text;
                           final taskDesc = taskDescController.text;

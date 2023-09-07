@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/models/task.dart';
 import 'package:flutter_todo_app/widgets/task/edit_task.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class TodoList extends StatefulWidget {
   const TodoList({super.key});
@@ -15,6 +15,14 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   // Firebase instance.
   var db = FirebaseFirestore.instance;
+
+  // Exclui item da lista.
+  void _deleteTaskItem(String taskId) {
+    db.collection("tasks").doc(taskId).delete().then(
+      (doc) => print("Document deleted"),
+      onError: (e) => print("Error updating document $e"),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,7 @@ class _TodoListState extends State<TodoList> {
         }
         // Snapshot vazio.
         if (!snapshot.hasData) {
-          return const Text('Empty!');
+          return const Center(child: Text('Empty!'));
         }
         return ListView(
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -36,26 +44,65 @@ class _TodoListState extends State<TodoList> {
             Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
             // Faz 1 card para cada item do map data.
-            return Card(
-              color: const Color.fromARGB(255, 252, 252, 252),
-              margin: const EdgeInsets.all(10),
-              child: ListTile(
-                leading: Icon(
-                  (data['tag'] == 'work') ? Icons.work : Icons.backpack,
-                  size: 30,
-                ),
-                title: Text(data['title']),
-                subtitle: Text(data['description']),
-                // Navigate to edit task screen.
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditTask(taskId: document.id, taskData: data),
+            return Column(
+              children: [
+                Slidable(
+                  // The end action pane is the one at the right or the bottom side.
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (context) => _deleteTaskItem(document.id),
+                        backgroundColor: const Color.fromARGB(255, 234, 71, 62),
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete_forever,
+                        label: 'Delete',
+                      ),
+                    ],
+                  ),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 82, 82, 82),
+                          blurRadius: 15.0,
+                        ),
+                      ],
                     ),
-                  );
-                },
-              ),
+                    child: Card(
+                      child: ListTile(
+                        leading: Icon(
+                          (data['tag'] == 'work') ? Icons.work : Icons.backpack,
+                          size: 35,
+                        ),
+                        title: Text(
+                          data['title'],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        subtitle: Text(
+                          data['description'],
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        // Navigate to edit task screen.
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  EditTask(taskId: document.id, taskData: data),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             );
           }).toList(),
         );
